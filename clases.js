@@ -1,3 +1,5 @@
+const fs= require('fs')
+const direccion='Prods.json'
 class ProductManager {
     constructor(){
         this.products=[]
@@ -28,12 +30,39 @@ class ProductManager {
             stock
         }
         this.products.push(product)
+        if(fs.existsSync(direccion)){
+            fs.promises.appendFile(direccion, ',')
+            let jsonStr=JSON.stringify(product)
+            fs.promises.appendFile(direccion, jsonStr)
+            .then(()=>{
+                console.log('Producto guardado')
+            })
+            .catch(e=>{
+                console.error('No se pudo guardar el producto',e)
+            })
+
+        } else {
+            fs.promises.writeFile(direccion, '[')
+            let jsonStr=JSON.stringify(product)
+            fs.promises.appendFile(direccion, jsonStr)
+                .then(()=>{
+                    console.log('Producto guardado')
+                })
+                .catch(e=>{
+                    console.error('No se pudo guardar el producto',e)
+                })
+            fs.promises.appendFile(direccion, ']')
+
+        }
+
+
+
 
     }
     getProductById=(id)=>{
         const prod= this.products.find(prod=>prod.code==id)
         if (prod == undefined) {
-            console.log("Not found")
+            console.log('Not found')
         } else {
             console.log(this.products[id-1])
         }
@@ -42,3 +71,5 @@ class ProductManager {
 
 
 const manager= new ProductManager()
+
+
