@@ -1,5 +1,5 @@
-import {ProductManagerFilesystem} from './app.js'
+import {ProductManager} from './app.js'
 
-const productManager = new ProductManagerFilesystem('./products.json')
+const productManager = new ProductManager('./products.json')
 
 export {productManager}

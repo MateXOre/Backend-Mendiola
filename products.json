@@ -1,0 +1,3 @@
+[{ "id":1, "title":"Celular", "description":"Gran calidad de camara, buena bateria", "price":"20000", "img":"", "stock":"6"}
+,{ "id":2, "title":"Televisor", "description":"Definicion 4k y control de voz", "price":"40000", "img":"", "stock":"9"}
+,{ "id":3, "title":"Smartwatch", "description":"A prueba de agua", "price":"4000", "img":"", "stock":"4"}]

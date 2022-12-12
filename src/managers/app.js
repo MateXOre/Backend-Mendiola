@@ -1,31 +1,51 @@
-const fs= require('fs')
-const http = require('http')
+import fs from "fs";
 const direccion='Prods.json'
 export class ProductManager {
-    constructor(){
-        this.products=[]
+    constructor(path){
+        this.path=path;
+        this.init();
     }
-    getProducts=()=>{
+
+    init() {
+        try {
+            const existFile= fs.existsSync(this.path);
+
+            if (existFile) return;
+            fs.writeFileSync(this.path, JSON.stringify([]));
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    async getProducts(){
         console.log(this.products)
-        const response = await fs.promises.readFile(this.direccion, 'utf-8');
+        const response = await fs.promises.readFile(this.path, 'utf-8');
         return JSON.parse(response)
     }
 
-    getNextCode=()=> {
+    async getProductById(id){
+        const products = await this.getProducts();
+
+        const productFound = products.find((product) => product.id === id);
+
+        return productFound;
+    }
+
+    getNextid=()=> {
         const count=this.products.length
         if(count==0) return 1
 
         const lastProduct= this.products[count-1]
-        const lastCode= lastProduct.code
-        const nextCode= lastCode + 1 
-        return nextCode
+        const lastid= lastProduct.id
+        const nextid= lastid + 1 
+        return nextid
     }
     
     addProducts=(title, description, price, thumbnail, stock)=>{
-        const code = this.getNextCode()
+        const id = this.getNextid()
 
         const product={
-            code,
+            id,
             title,
             description,
             price,
@@ -61,14 +81,6 @@ export class ProductManager {
 
 
 
-    }
-    getProductById=(id)=>{
-        const prod= this.products.find(prod=>prod.code==id)
-        if (prod == undefined) {
-            console.log('Not found')
-        } else {
-            console.log(this.products[id-1])
-        }
     }
 }
 
